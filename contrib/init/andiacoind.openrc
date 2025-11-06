@@ -1,0 +1,93 @@
+#!/sbin/openrc-run
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/andiacoin/.andiacoin" ]; then
+	ANDIACOIND_DEFAULT_DATADIR="/var/lib/andiacoin/.andiacoin"
+else
+	ANDIACOIND_DEFAULT_DATADIR="/var/lib/andiacoind"
+fi
+
+ANDIACOIND_CONFIGFILE=${ANDIACOIND_CONFIGFILE:-/etc/andiacoin/andiacoin.conf}
+ANDIACOIND_PIDDIR=${ANDIACOIND_PIDDIR:-/var/run/andiacoind}
+ANDIACOIND_PIDFILE=${ANDIACOIND_PIDFILE:-${ANDIACOIND_PIDDIR}/andiacoind.pid}
+ANDIACOIND_DATADIR=${ANDIACOIND_DATADIR:-${ANDIACOIND_DEFAULT_DATADIR}}
+ANDIACOIND_USER=${ANDIACOIND_USER:-${ANDIACOIN_USER:-andiacoin}}
+ANDIACOIND_GROUP=${ANDIACOIND_GROUP:-andiacoin}
+ANDIACOIND_BIN=${ANDIACOIND_BIN:-/usr/bin/andiacoind}
+ANDIACOIND_NICE=${ANDIACOIND_NICE:-${NICELEVEL:-0}}
+ANDIACOIND_OPTS="${ANDIACOIND_OPTS:-${ANDIACOIN_OPTS}}"
+
+name="Andiacoin Core Daemon"
+description="Andiacoin cryptocurrency P2P network daemon"
+
+command="/usr/bin/andiacoind"
+command_args="-pid=\"${ANDIACOIND_PIDFILE}\" \
+		-conf=\"${ANDIACOIND_CONFIGFILE}\" \
+		-datadir=\"${ANDIACOIND_DATADIR}\" \
+		-daemon \
+		${ANDIACOIND_OPTS}"
+
+required_files="${ANDIACOIND_CONFIGFILE}"
+start_stop_daemon_args="-u ${ANDIACOIND_USER} \
+			-N ${ANDIACOIND_NICE} -w 2000"
+pidfile="${ANDIACOIND_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${ANDIACOIND_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${ANDIACOIND_USER}:${ANDIACOIND_GROUP}" \
+	"${ANDIACOIND_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${ANDIACOIND_USER}:${ANDIACOIND_GROUP}" \
+	"${ANDIACOIND_PIDDIR}"
+
+	checkpath -f \
+	-o "${ANDIACOIND_USER}:${ANDIACOIND_GROUP}" \
+	-m 0660 \
+	"${ANDIACOIND_CONFIGFILE}"
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if grep -qs '^rpcuser=' "${ANDIACOIND_CONFIGFILE}" && \
+		! grep -qs '^rpcpassword=' "${ANDIACOIND_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run andiacoind."
+		eerror "The setting must appear in ${ANDIACOIND_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Andiacoin Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

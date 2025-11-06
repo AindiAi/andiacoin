@@ -1,9 +1,9 @@
-// Copyright (c) 2021 The Bitcoin Core developers
+// Copyright (c) 2021 The Andiacoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_IPC_PROTOCOL_H
-#define BITCOIN_IPC_PROTOCOL_H
+#ifndef ANDIACOIN_IPC_PROTOCOL_H
+#define ANDIACOIN_IPC_PROTOCOL_H
 
 #include <interfaces/init.h>
 
@@ -41,4 +41,4 @@ public:
 };
 } // namespace ipc
 
-#endif // BITCOIN_IPC_PROTOCOL_H
+#endif // ANDIACOIN_IPC_PROTOCOL_H

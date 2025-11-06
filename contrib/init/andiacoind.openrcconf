@@ -1,0 +1,33 @@
+# /etc/conf.d/andiacoind: config file for /etc/init.d/andiacoind
+
+# Config file location
+#ANDIACOIND_CONFIGFILE="/etc/andiacoin/andiacoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $ANDIACOIND_USER)
+#ANDIACOIND_PIDDIR="/var/run/andiacoind"
+
+# What filename to give the pidfile
+#ANDIACOIND_PIDFILE="${ANDIACOIND_PIDDIR}/andiacoind.pid"
+
+# Where to write andiacoind data (be mindful that the blockchain is large)
+#ANDIACOIND_DATADIR="/var/lib/andiacoind"
+
+# User and group to own andiacoind process
+#ANDIACOIND_USER="andiacoin"
+#ANDIACOIND_GROUP="andiacoin"
+
+# Path to andiacoind executable
+#ANDIACOIND_BIN="/usr/bin/andiacoind"
+
+# Nice value to run andiacoind under
+#ANDIACOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#ANDIACOIND_OPTS=""
+
+# The timeout in seconds OpenRC will wait for andiacoind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+ANDIACOIND_SIGTERM_TIMEOUT=600

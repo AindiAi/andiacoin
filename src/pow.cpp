@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2022 The Andiacoin Core developers
+// Copyright (c) 2009-2025 The Bitcoin Core developers
+// Copyright (c) 2025 The Andiacoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,6 +13,11 @@
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
+   // 60,000 ब्लॉक तक डिफिकल्टी ज़ीरो रहेगी
+    if (pindexLast->nHeight + 1 < 60000) {
+        return UintToArith256(params.powLimit).GetCompact();
+    }
+   
     assert(pindexLast != nullptr);
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 

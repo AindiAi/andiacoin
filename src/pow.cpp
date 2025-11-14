@@ -12,12 +12,7 @@
 #include <uint256.h>
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
-{
-   // 60,000 ब्लॉक तक डिफिकल्टी ज़ीरो रहेगी
-    if (pindexLast->nHeight + 1 < 60000) {
-        return UintToArith256(params.powLimit).GetCompact();
-    }
-   
+{ 
     assert(pindexLast != nullptr);
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 

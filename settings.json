@@ -1,0 +1,61 @@
+{
+  "title": "Andiacoin Explorer",
+  "address": "http://andiacoin.site",
+  "coin": "Andiacoin",
+  "symbol": "ADC",
+  "logo": "/images/logo.png",
+  "favicon": "public/favicon.ico",
+  "theme": "Cyborg",
+  "port": 3001,
+  "db": {
+    "address": "127.0.0.1",
+    "port": 27017,
+    "database": "iquidusdb",
+    "user": "",
+    "password": ""
+  },
+  "wallet": {
+    "host": "127.0.0.1",
+    "port": 12031,
+    "user": "admin",
+    "password": "7697"
+  },
+  "api": {
+    "enabled": true,
+    "allow_cors": true
+  },
+  "indexes": {
+    "difficulty": true,
+    "hashrate": true
+  },
+  "markets": {
+    "coinmarketcap": { "id": "" },
+    "coingecko": { "id": "" },
+    "default": "coinmarketcap"
+  },
+  "richlist": {
+    "distribution": true,
+    "received": true,
+    "balance": true
+  },
+  "movement": {
+    "min_amount": 100,
+    "low_flag": 1000,
+    "high_flag": 5000
+  },
+  "genesis_block": "57bbf033143092dfbdf0b8e8fdf5c798f5f65f16a7bd1d6eb173016e327218c0",
+  "genesis_tx": "aca5b3f3a75ce569d96010f444aeac7025ac17e8e5bfc72f7f3ebb2908f03f36",
+  "network": {
+    "timelock": 24
+  },
+  "crash_on_fatal_error": true,
+  "auto_reload_block_notify": false,
+  "reload_interval": 60,
+  "sync": {
+    "update_timeout": 10,
+    "check_timeout": 10
+  },
+  "ipc": {
+    "enabled": false
+  }
+}

@@ -1,3 +1,4 @@
+cat <<EOF > settings.json
 {
   "title": "Andiacoin Explorer",
   "address": "http://andiacoin.site",
@@ -18,7 +19,7 @@
     "host": "127.0.0.1",
     "port": 12031,
     "user": "admin",
-    "password": "7697"
+    "password": "123"
   },
   "api": {
     "enabled": true,
@@ -31,7 +32,8 @@
   "markets": {
     "coinmarketcap": { "id": "" },
     "coingecko": { "id": "" },
-    "default": "coinmarketcap"
+    "default": "coinmarketcap",
+    "enabled": []
   },
   "richlist": {
     "distribution": true,
@@ -59,3 +61,4 @@
     "enabled": false
   }
 }
+EOF
